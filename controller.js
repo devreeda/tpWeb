@@ -1,4 +1,5 @@
 var editingMode = { rect: 0, line: 1 };
+let id = 0;
 
 function Pencil(ctx, drawing, canvas) {
   this.ctx = ctx;
@@ -22,7 +23,8 @@ function Pencil(ctx, drawing, canvas) {
         dnd.finalX,
         dnd.finalY,
         document.getElementById("spinnerWidth").value,
-        document.getElementById("colour").value
+        document.getElementById("colour").value,
+        id
       );
     } else {
       this.currentShape = new Line(
@@ -31,9 +33,11 @@ function Pencil(ctx, drawing, canvas) {
         dnd.finalX,
         dnd.finalY,
         document.getElementById("spinnerWidth").value,
-        document.getElementById("colour").value
+        document.getElementById("colour").value,
+        id
       );
     }
+    id++;
   };
 
   this.onInteractionUpdate = dnd => {
@@ -51,7 +55,26 @@ function Pencil(ctx, drawing, canvas) {
     this.currentShape.finalY = dnd.finalY;
     this.currentShape.paint(this.ctx);
     drawing.addForms(this.currentShape);
-    console.log(drawing.getForms());
     drawing.paint(this.ctx, this.canvas);
+    /*
+    drawing.updateShapeList();
+    for (let i = 0; i < drawing.getForms().length; i++) {
+      document
+        .getElementById(`delete-btn${i}`)
+        .addEventListener("click", () => {
+          drawing.removeForm(i);
+        });
+    }*/
+
+    //REMOVE ELEMENT
+    lastIndex = drawing.getForms()[drawing.getForms().length - 1].getIndex();
+
+    drawing.updateShapeList();
+    document.getElementById(`d${lastIndex}`).onclick = event => {
+      currentIndex = event.currentTarget.id.substring(1);
+      drawing.removeForm(parseInt(currentIndex));
+      document.getElementById(`d${parseInt(currentIndex)}`).remove();
+      drawing.paint(this.ctx, this.canvas);
+    };
   };
 }

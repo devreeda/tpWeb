@@ -51,6 +51,32 @@ Line.prototype.clear = function(ctx, canvas) {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 };
 
-Drawing.prototype.updateShapeList = function(shape) {
-  this.addForms(shape);
+Drawing.prototype.updateShapeList = function() {
+  var ul = document.getElementById("shapeList");
+  //ul.innerHTML = `<ul class="list-unstyled" id="shapeList"></ul>`;
+  var li = document.createElement("li");
+
+  if (this.getForms()[this.getForms().length - 1].getType() === "line") {
+    li.innerHTML = `<div id="d${this.getForms()[
+      this.getForms().length - 1
+    ].getIndex()}">Line <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-remove-sign"></span>
+  </button></div>`;
+  } else {
+    li.innerHTML = `<div id="d${this.getForms()[
+      this.getForms().length - 1
+    ].getIndex()}">Rectangle <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-remove-sign"></span>
+  </button></div>`;
+  }
+
+  ul.appendChild(li);
+
+  /*
+  document
+    .getElementById(`delete-btn${id}`)
+    .addEventListener("click", function() {
+      //this.removeForms()
+      console.log(id);
+    });*/
 };
